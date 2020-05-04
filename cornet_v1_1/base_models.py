@@ -1,16 +1,29 @@
 import functools
 
+import torch
 import torchvision.models
-from model_tools.activations.pytorch import PytorchWrapper
-from model_tools.activations.pytorch import load_preprocess_images
+from model_tools.activations import pytorch
 
-from test import test_models
-import cornet
+from cornet_v1_1 import cornet
+from cornet_v1_1.tests import test_models
 
 """
 Template module for a base model submission to brain-score
 """
 
+
+class PytorchWrapper(pytorch.PytorchWrapper):
+
+    @classmethod
+    def _tensor_to_numpy(cls, output):
+        return output[0].cpu().data.numpy()  # only return output, not state
+
+    def register_hook(self, layer, layer_name, target_dict):
+        def hook_function(_layer, _input, output, name=layer_name):
+            target_dict[name] = PytorchWrapper._tensor_to_numpy(output)
+
+        hook = layer.register_forward_hook(hook_function)
+        return hook
 
 
 def get_model_list():
@@ -33,8 +46,9 @@ def get_model(name):
     :return: the model instance
     """
     assert name == 'cornet-v1.1'
-    model = cornet.CORnet_v1(times=7, pretrained=True)
-    preprocessing = functools.partial(load_preprocess_images, image_size=224)
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    model = cornet.CORnet_v1(times=7, pretrained=True, map_location=device)
+    preprocessing = functools.partial(pytorch.load_preprocess_images, image_size=224)
     wrapper = PytorchWrapper(identifier='cornet-v1.1', model=model, preprocessing=preprocessing)
     wrapper.image_size = 224
     return wrapper
@@ -52,6 +66,7 @@ def get_layers(name):
     """
     assert name == 'cornet-v1.1'
     return ['V1', 'V2', 'V4', 'IT']
+
 
 if __name__ == '__main__':
     test_models.test_base_models(__name__)

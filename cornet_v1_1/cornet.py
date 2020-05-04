@@ -134,10 +134,9 @@ class CORnet_v1(nn.Module):
                 m.bias.data.zero_()
 
         if pretrained:
-            ckpt_data = torch.utils.model_zoo.load_url(
-                'https://github.com/qbilius/cornet-v1.1/cornet_v1.1-.pth',
-                map_location=map_location)
-            self.load_state_dict(ckpt_data['state_dict'])
+            weights = torch.load('models/cornet-v1.1.pth',
+                                 map_location=map_location)
+            self.load_state_dict(weights)
 
     def forward(self, inp):
         lgn_output = self.LGN(inp)

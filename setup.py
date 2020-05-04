@@ -14,7 +14,7 @@ requirements = [
 ]
 
 setup(
-    name='cornet-v1.1',
+    name='cornet_v1_1',
     version='1.1.0',
     description="CORnet v1.1 wrapped for Brain-Score testing",
     long_description=readme,
