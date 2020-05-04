@@ -10,7 +10,7 @@ requirements = [
     "model-tools @ git+https://github.com/brain-score/model-tools",
     "numpy",
     "result_caching @ git+https://github.com/mschrimpf/result_caching",
-    "torch",
+    "torch=1.4",
     "xarray==0.12"
 ]
 
