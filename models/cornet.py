@@ -2,6 +2,7 @@ from collections import OrderedDict
 
 import torch
 from torch import nn
+from pathlib import Path
 
 
 class Identity(nn.Module):
@@ -134,7 +135,8 @@ class CORnet_v1(nn.Module):
                 m.bias.data.zero_()
 
         if pretrained:
-            weights = torch.load('models/cornet-v1.1.pth',
+            weights_path = Path(__file__).parent.parent / 'weights' / 'cornet-v1.1.pth'
+            weights = torch.load(weights_path,
                                  map_location=map_location)
             self.load_state_dict(weights)
 

@@ -4,8 +4,8 @@ import torch
 import torchvision.models
 from model_tools.activations import pytorch
 
-from cornet_v1_1 import cornet
-from cornet_v1_1.tests import test_models
+from models import cornet
+from models.tests import test_models
 
 """
 Template module for a base model submission to brain-score

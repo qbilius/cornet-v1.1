@@ -10,13 +10,14 @@ requirements = [
     "model-tools @ git+https://github.com/brain-score/model-tools",
     "numpy",
     "result_caching @ git+https://github.com/mschrimpf/result_caching",
-    "torch=1.4",
-    "xarray==0.12"
+    "torch==1.6",
+    "torchvision==0.7.0",
+    "xarray==0.12",
 ]
 
 setup(
     name='cornet_v1_1',
-    version='1.1.0',
+    version='1.1.1',
     description="CORnet v1.1 wrapped for Brain-Score testing",
     long_description=readme,
     author="Jonas Kubilius",
